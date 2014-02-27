@@ -1,5 +1,14 @@
 <RCC>
     <qresource prefix="/new/prefix1">
-        <file>edit-find.png</file>
+        <file>cut.ico</file>
+        <file>paste.ico</file>
+        <file>load.ico</file>
+        <file>copy.ico</file>
+        <file>save.ico</file>
+        <file>back.ico</file>
+        <file>forward.ico</file>
+        <file>bold-128.png</file>
+        <file>underline.jpeg</file>
+        <file>Italic.png</file>
     </qresource>
 </RCC>

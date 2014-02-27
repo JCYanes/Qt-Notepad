@@ -18,27 +18,13 @@ NotepadWindow::NotepadWindow(QWidget *parent)
     mnuArchivo_ = new QMenu (tr("&Archivo"), this);//Especificamos el texto del menu
     mainMenu_-> addMenu(mnuArchivo_);
 
-    //Editar
-    mnuEditar_ = new QMenu(tr("&Editar"), this);
-    mainMenu_->addMenu(mnuEditar_);
-
-    //Formato
-    mnuFormato_ = new QMenu(tr("&Formato"), this);
-    mainMenu_->addMenu(mnuFormato_);
-
-    //Ayuda
-    mnuAyuda_ = new QMenu(tr("&Ayuda"), this);
-    mainMenu_->addMenu(mnuAyuda_);
-
-
-    //acciones
     //abrir
-    actArchivoAbrir_ = new QAction(QIcon(":/new/prefix1/edit-find.png"),tr("&Abrir"),this);
+    actArchivoAbrir_ = new QAction(QIcon(":/new/prefix1/load.ico"),tr("&Abrir"),this);
     actArchivoAbrir_-> setShortcut(QKeySequence(Qt::CTRL + Qt::Key_A));
     mnuArchivo_->addAction(actArchivoAbrir_);
     toolMenu_->addAction(actArchivoAbrir_);
     //guardar
-    actArchivoGuardar_ = new QAction(tr("&Guardar"),this);
+    actArchivoGuardar_ = new QAction(QIcon(":/new/prefix1/save.ico"),tr("&Guardar"),this);
     actArchivoGuardar_-> setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
     mnuArchivo_->addAction(actArchivoGuardar_);
     toolMenu_->addAction(actArchivoGuardar_);
@@ -46,41 +32,58 @@ NotepadWindow::NotepadWindow(QWidget *parent)
     actArchivoCerrar_= new QAction(tr("&Cerrar"),this);
     actArchivoCerrar_->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_Q));
     mnuArchivo_->addAction(actArchivoCerrar_);
-    toolMenu_->addAction(actArchivoCerrar_);
+    //toolMenu_->addAction(actArchivoCerrar_);
+
+    //Editar
+    mnuEditar_ = new QMenu(tr("&Editar"), this);
+    mainMenu_->addMenu(mnuEditar_);
 
     //Copiar
-    actEditarCopiar_ = new QAction(tr("&Copiar"), this);
+    actEditarCopiar_ = new QAction(QIcon(":/new/prefix1/copy.ico"),tr("&Copiar"), this);
     actEditarCopiar_->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
     mnuEditar_->addAction(actEditarCopiar_);
     toolMenu_->addAction(actEditarCopiar_);
     //Cortar
-    actEditarCortar_ = new QAction(tr("&Cortar"), this);
+    actEditarCortar_ = new QAction(QIcon(":/new/prefix1/cut.ico"),tr("&Cortar"), this);
     actEditarCortar_->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
     mnuEditar_->addAction(actEditarCortar_);
     toolMenu_->addAction(actEditarCortar_);
     //Pegar
-    actEditarPegar_ = new QAction(tr("&Pegar"), this);
+    actEditarPegar_ = new QAction(QIcon(":/new/prefix1/paste.ico"),tr("&Pegar"), this);
     actEditarPegar_->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
     mnuEditar_->addAction(actEditarPegar_);
     toolMenu_->addAction(actEditarPegar_);
 
     //deshacer
-    actEditarDeshacer_ = new QAction(tr("&Deshacer"), this);
+    actEditarDeshacer_ = new QAction(QIcon(":/new/prefix1/back.ico"),tr("&Deshacer"), this);
     actEditarDeshacer_->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Y));
     mnuEditar_->addAction(actEditarDeshacer_);
-     toolMenu_->addAction(actEditarDeshacer_);
+    toolMenu_->addAction(actEditarDeshacer_);
 
     //Rehacer
-    actEditarRehacer_ = new QAction(tr("&Reshacer"), this);
+    actEditarRehacer_ = new QAction(QIcon(":/new/prefix1/forward.ico"),tr("&Reshacer"), this);
     actEditarRehacer_->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
     mnuEditar_->addAction(actEditarRehacer_);
     toolMenu_->addAction(actEditarRehacer_);
 
+    //Formato
+    mnuFormato_ = new QMenu(tr("&Formato"), this);
+    mainMenu_->addMenu(mnuFormato_);
 
     //Fuente
     actFormatoFuente_ = new QAction(tr("&Fuente"), this);
     mnuFormato_->addAction(actFormatoFuente_);
-    toolMenu_->addAction(actFormatoFuente_);
+    actFormatoNegrita_ = new QAction(QIcon(":/new/prefix1/bold-128.png"),tr("&Negrita"),this);
+    toolMenu_->addAction(actFormatoNegrita_);
+    actFormatoCursiva_= new QAction(QIcon(":/new/prefix1/Italic.png"),tr("&Cursiva"),this);
+    toolMenu_->addAction(actFormatoCursiva_);
+    actFormatoSubrayado_ = new QAction (QIcon(":/new/prefix1/underline.jpeg"),tr("Subrayado"),this);
+    toolMenu_->addAction(actFormatoSubrayado_);
+
+    //Ayuda
+    mnuAyuda_ = new QMenu(tr("&Ayuda"), this);
+    mainMenu_->addMenu(mnuAyuda_);
+
 
     //Acercade
 
@@ -93,7 +96,7 @@ NotepadWindow::NotepadWindow(QWidget *parent)
     setMenuBar(mainMenu_);
     addToolBar(toolMenu_);
    //colamos la ventana de texto
-    txtEditor_ = new QPlainTextEdit(this);
+    txtEditor_ = new QTextEdit(this);
     setCentralWidget(txtEditor_);//Centramos el widget
 
 
@@ -107,6 +110,9 @@ NotepadWindow::NotepadWindow(QWidget *parent)
     connect(actEditarDeshacer_, SIGNAL(triggered()), txtEditor_, SLOT(undo()));
     connect(actEditarRehacer_, SIGNAL(triggered()), txtEditor_, SLOT(redo()));
     connect(actFormatoFuente_, SIGNAL(triggered()), this, SLOT(alFuente()));
+    connect(actFormatoNegrita_, SIGNAL(triggered()), this, SLOT(alFuenteNegrita()));
+    connect(actFormatoCursiva_, SIGNAL(triggered()), this, SLOT(alFuenteCursiva()));
+    connect(actFormatoSubrayado_, SIGNAL(triggered()), this, SLOT(alFuenteSubrayado()));
     connect(actAyudaAcerca_, SIGNAL(triggered()), this, SLOT (acerca()));
 
 
@@ -136,7 +142,7 @@ void NotepadWindow:: alAbrir(){
         archivo.setFileName(nombreArchivo);
         if (archivo.open(QFile::ReadOnly)){
             //Solo permiso de lectura
-            txtEditor_->setPlainText(archivo.readAll());
+            txtEditor_->setText(archivo.readAll());
             //Cerramos el fichero
             archivo.close();
         }
@@ -145,7 +151,7 @@ void NotepadWindow:: alAbrir(){
 
 void NotepadWindow:: alGuardar(){
     QString nombreArchivo;
-    nombreArchivo = QFileDialog:: getSaveFileName(this,tr("Guardar archivo"),"",tr("Archivo de texto plano (*.txt)"));
+    nombreArchivo = QFileDialog:: getSaveFileName(this,tr("Guardar archivo"),"",tr("Archivo de texto (*.txt)"));
     if (nombreArchivo != ""){
         QFile archivo;
         archivo.setFileName(nombreArchivo);
@@ -170,4 +176,51 @@ void NotepadWindow::alFuente()
 void NotepadWindow::acerca()
 {
     QMessageBox::about(this,"Acerca de","Este es un editor de texto");
+}
+void NotepadWindow::alFuenteNegrita()
+{
+
+    QTextCursor cursor = txtEditor_->textCursor();
+    QTextCharFormat formato = cursor.charFormat();
+    QFont font;
+    if (formato.fontWeight() == QFont::Bold) {
+        font.setBold(false);
+    }
+    else {
+        font.setBold(true);
+    }
+    formato.setFont(font);
+    cursor.setCharFormat(formato);
+}
+
+void NotepadWindow::alFuenteCursiva()
+{
+    QTextCursor cursor = txtEditor_->textCursor();
+    QTextCharFormat formato = cursor.charFormat();
+    QFont font;
+    if (formato.fontItalic()) {
+        font.setItalic(false);
+    }
+    else {
+        font.setItalic(true);
+    }
+    formato.setFont(font);
+    cursor.setCharFormat(formato);
+
+}
+
+void NotepadWindow::alFuenteSubrayado()
+{
+    QTextCursor cursor = txtEditor_->textCursor();
+    QTextCharFormat formato = cursor.charFormat();
+    QFont font;
+    if (formato.fontUnderline()) {
+        font.setUnderline(false);
+    }
+    else {
+        font.setUnderline(true);
+    }
+    formato.setFont(font);
+    cursor.setCharFormat(formato);
+
 }
